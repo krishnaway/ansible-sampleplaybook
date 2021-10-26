@@ -1,0 +1,39 @@
+---
+- name: This playbook is to install complete appache webserver package
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Installing httpd
+    yum:
+            name: httpd
+            state: installed
+    when: ansible_os_family == "RedHat"
+    notify: starting httpd
+
+  - name: installing apache2
+    apt:
+            name: apache2
+            state: present
+    when: ansible_os_family == "Debian"
+    notify: starting apache2
+
+  - name: copy index.html
+    copy:
+            src: /home/ansadmin/index.html
+            dest: /var/www/html
+            mode: 0666
+
+  handlers:
+  - name: starting httpd
+    service:
+            name: httpd
+            state: started
+    when: ansible_os_family == "RedHat"
+  
+  - name: starting apache2
+    service:
+            name: apache2
+            state: started
+    when: ansible_os_family == "Debian"
+...

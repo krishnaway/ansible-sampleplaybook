@@ -1,0 +1,40 @@
+---
+- name: This playbook is to install tomcat webserver
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: This is to install java on RedHat machines
+    yum:
+            name: java
+            state: installed
+    when: ansible_os_family == "RedHat"
+    
+  - name: This is to install java on Debian machines
+    apt:
+            name: default-jdk
+            state: present
+    when: ansible_os_family == "Debian"
+
+  - name: This is to download tomcat
+    get_url:
+            url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.72/bin/apache-tomcat-8.5.72.tar.gz
+            dest: /opt
+
+  - name: This is to extracting tomcat
+    unarchive:
+            src: /opt/apache-tomcat-8.5.72.tar.gz
+            dest: /opt
+            mode: 0755 
+            remote_src: yes
+                
+  - name: This is to change permission of file
+    file:
+            path: /opt/apache-tomcat-8.5.72/bin/startup.sh
+            mode: 0777
+
+  - name: This is to starting tomcat
+    shell: nohup ./startup.sh
+    args:
+            chdir: /opt/apache-tomcat-8.5.72/bin
+...

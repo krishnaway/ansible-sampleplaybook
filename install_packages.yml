@@ -1,0 +1,11 @@
+---
+- name: This playbook is to install packages
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: to install a package
+    yum:
+            name: httpd
+            state: present
+...

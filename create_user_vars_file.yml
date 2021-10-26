@@ -1,0 +1,14 @@
+---
+- name: This playbook is to use variable in different file in ansible
+  hosts: all
+  become: yes
+
+  vars_files:
+  - user.yml
+
+  tasks:
+  - name: creating user {{user}}
+    user:
+            name: "{{user1}}"
+
+...

@@ -1,0 +1,14 @@
+---
+- name: This playbook is to use variable in ansible
+  hosts: all
+  become: yes
+
+  vars:
+          user: sunny
+
+  tasks:
+  - name: creating user {{user}}
+    user:
+            name: "{{user}}"
+
+...
